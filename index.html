@@ -128,19 +128,31 @@
         .link-card:nth-child(5) { animation-delay: 0.8s; }
         .link-card:nth-child(6) { animation-delay: 1.0s; }
 
+        /* הגדרות האייקון - הוזז שמאלה והוגדל */
         .link-icon {
             position: absolute;
-            right: 15px; 
-            width: 28px;
-            height: 28px;
+            left: 15px; /* מוזז לצד שמאל */
+            width: 38px; /* הוגדל משמעותית */
+            height: 38px; /* הוגדל משמעותית */
             image-rendering: pixelated; 
             z-index: 2; 
+            border-radius: 6px;
+            transition: all 0.3s ease;
         }
         
         .link-text {
             z-index: 2; 
         }
 
+        /* תאורת ניאון (Glow) קבועה לאייקונים לפי צבע הפלטפורמה */
+        .discord-link .link-icon { filter: drop-shadow(0 0 6px rgba(138,159,255,0.8)); }
+        .kick-link .link-icon { filter: drop-shadow(0 0 6px rgba(9,255,0,0.8)); }
+        .youtube-link .link-icon { filter: drop-shadow(0 0 6px rgba(255,31,31,0.8)); }
+        .tiktok-link .link-icon { filter: drop-shadow(0 0 6px rgba(255,56,106,0.8)); }
+        .instagram-link .link-icon { filter: drop-shadow(0 0 6px rgba(255,114,54,0.8)); }
+        .x-link .link-icon { filter: drop-shadow(0 0 6px rgba(255,255,255,0.5)); }
+
+        /* אפקטי הריחוף - מגביר את הניאון של האייקון בנוסף לאנימציית הכפתור */
         .discord-link:hover { 
             background: linear-gradient(90deg, rgba(10,10,15,0.9), rgba(138,159,255,0.6), rgba(10,10,15,0.9), rgba(138,159,255,0.4));
             background-size: 300% 300%;
@@ -148,6 +160,7 @@
             border-color: #8a9fff;
             box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(138, 159, 255, 0.7);
         }
+        .discord-link:hover .link-icon { filter: drop-shadow(0 0 12px rgba(138,159,255,1)); transform: scale(1.05); }
 
         .kick-link:hover { 
             background: linear-gradient(90deg, rgba(10,10,15,0.9), rgba(9,255,0,0.5), rgba(10,10,15,0.9), rgba(9,255,0,0.3));
@@ -156,6 +169,7 @@
             border-color: #09ff00;
             box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(9, 255, 0, 0.7);
         }
+        .kick-link:hover .link-icon { filter: drop-shadow(0 0 12px rgba(9,255,0,1)); transform: scale(1.05); }
 
         .youtube-link:hover { 
             background: linear-gradient(90deg, rgba(10,10,15,0.9), rgba(255,31,31,0.6), rgba(10,10,15,0.9), rgba(255,31,31,0.4));
@@ -164,6 +178,7 @@
             border-color: #ff1f1f;
             box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(255, 31, 31, 0.7);
         }
+        .youtube-link:hover .link-icon { filter: drop-shadow(0 0 12px rgba(255,31,31,1)); transform: scale(1.05); }
 
         .tiktok-link:hover { 
             background: linear-gradient(90deg, rgba(10,10,15,0.9), rgba(255,56,106,0.6), rgba(10,10,15,0.9), rgba(255,56,106,0.4));
@@ -172,6 +187,7 @@
             border-color: #ff386a;
             box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(255, 56, 106, 0.7);
         }
+        .tiktok-link:hover .link-icon { filter: drop-shadow(0 0 12px rgba(255,56,106,1)); transform: scale(1.05); }
 
         .instagram-link:hover { 
             background: linear-gradient(90deg, rgba(10,10,15,0.9), rgba(255,114,54,0.6), rgba(10,10,15,0.9), rgba(255,114,54,0.4));
@@ -180,6 +196,7 @@
             border-color: #ff7236;
             box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(255, 114, 54, 0.7);
         }
+        .instagram-link:hover .link-icon { filter: drop-shadow(0 0 12px rgba(255,114,54,1)); transform: scale(1.05); }
 
         .x-link:hover { 
             background: linear-gradient(90deg, rgba(10,10,15,0.9), rgba(100,100,100,0.5), rgba(10,10,15,0.9), rgba(80,80,80,0.4));
@@ -188,8 +205,8 @@
             border-color: #ffffff; 
             box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(255, 255, 255, 0.5);
         }
+        .x-link:hover .link-icon { filter: drop-shadow(0 0 12px rgba(255,255,255,0.8)); transform: scale(1.05); }
 
-        /* עיצוב הפוטר המעודכן */
         .footer-credits {
             margin-top: 20px;
             text-align: center;
@@ -246,7 +263,6 @@
 
         </div>
 
-        <!-- הפוטר העדכני -->
         <div class="footer-credits">
             &copy; 2026 FlintPrime<br>
             Created by FlintPrime
