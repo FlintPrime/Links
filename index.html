@@ -43,15 +43,23 @@
             pointer-events: none; 
         }
 
+        /* מלבן התוכן המרכזי שעודכן - סגנון Glassmorphism */
         .content-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             width: 90%;
-            max-width: 400px;
-            max-height: 95vh; 
+            max-width: 420px; /* הורחב מעט כדי לתת מקום למרווח הפנימי */
+            max-height: 90vh; 
             z-index: 1;
-            padding-bottom: 10px;
+            
+            /* עיצוב המלבן השחור השקוף */
+            background: rgba(10, 10, 15, 0.45); /* שחור עם 45% שקיפות */
+            border-radius: 24px; /* קצוות מעוגלים */
+            padding: 35px 20px; /* מרווח פנימי מעל ומתחת, ובצדדים */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6); /* הצללה חיצונית עמוקה למלבן עצמו */
+            backdrop-filter: blur(8px); /* אפקט טשטוש לזכוכית חלבית */
+            border: 1px solid rgba(255, 255, 255, 0.05); /* מסגרת עדינה מאוד למראה יוקרתי */
         }
 
         .profile-img {
@@ -101,7 +109,7 @@
         }
 
         .link-card {
-            background: rgba(10, 10, 15, 0.85);
+            background: rgba(15, 15, 20, 0.75); /* טיפה יותר כהה כדי לבלוט בתוך המלבן */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -115,7 +123,6 @@
             transition: all 0.3s ease;
             font-weight: bold;
             font-size: 17px;
-            backdrop-filter: blur(4px);
             flex-shrink: 0; 
             overflow: hidden; 
             animation: floatIdle 4s ease-in-out infinite;
@@ -128,12 +135,11 @@
         .link-card:nth-child(5) { animation-delay: 0.8s; }
         .link-card:nth-child(6) { animation-delay: 1.0s; }
 
-        /* הגדרות האייקון - הוזז שמאלה והוגדל */
         .link-icon {
             position: absolute;
-            left: 15px; /* מוזז לצד שמאל */
-            width: 38px; /* הוגדל משמעותית */
-            height: 38px; /* הוגדל משמעותית */
+            left: 15px; 
+            width: 38px; 
+            height: 38px; 
             image-rendering: pixelated; 
             z-index: 2; 
             border-radius: 6px;
@@ -144,7 +150,6 @@
             z-index: 2; 
         }
 
-        /* תאורת ניאון (Glow) קבועה לאייקונים לפי צבע הפלטפורמה */
         .discord-link .link-icon { filter: drop-shadow(0 0 6px rgba(138,159,255,0.8)); }
         .kick-link .link-icon { filter: drop-shadow(0 0 6px rgba(9,255,0,0.8)); }
         .youtube-link .link-icon { filter: drop-shadow(0 0 6px rgba(255,31,31,0.8)); }
@@ -152,7 +157,6 @@
         .instagram-link .link-icon { filter: drop-shadow(0 0 6px rgba(255,114,54,0.8)); }
         .x-link .link-icon { filter: drop-shadow(0 0 6px rgba(255,255,255,0.5)); }
 
-        /* אפקטי הריחוף - מגביר את הניאון של האייקון בנוסף לאנימציית הכפתור */
         .discord-link:hover { 
             background: linear-gradient(90deg, rgba(10,10,15,0.9), rgba(138,159,255,0.6), rgba(10,10,15,0.9), rgba(138,159,255,0.4));
             background-size: 300% 300%;
@@ -207,15 +211,16 @@
         }
         .x-link:hover .link-icon { filter: drop-shadow(0 0 12px rgba(255,255,255,0.8)); transform: scale(1.05); }
 
+        /* טקסט הפוטר הובהר כדי שייראה מעולה על הרקע השחור החדש */
         .footer-credits {
-            margin-top: 20px;
+            margin-top: 25px;
             text-align: center;
             font-size: 13px;
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(255, 255, 255, 0.85); /* הובהר */
             letter-spacing: 0.5px;
             line-height: 1.6;
             flex-shrink: 0;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.9);
         }
     </style>
 </head>
