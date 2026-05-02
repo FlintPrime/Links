@@ -26,11 +26,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 0; /* שכבת בסיס */
+            z-index: 0; 
             background-color: #05050a; 
         }
 
-        /* השחרת קצוות להבלטת המרכז */
+        /* השחרת קצוות להבלטת המרכז והאורות */
         .vignette-layer {
             position: fixed;
             top: 0;
@@ -38,7 +38,7 @@
             width: 100%;
             height: 100%;
             background: radial-gradient(circle, rgba(0,0,0,0) 20%, rgba(0,0,0,0.6) 100%);
-            z-index: 1; /* מעל החלקיקים */
+            z-index: 1; 
             pointer-events: none; 
         }
 
@@ -51,7 +51,7 @@
             max-width: 420px; 
             max-height: 90vh; 
             position: relative; 
-            z-index: 2; /* מעל הכל */
+            z-index: 2; 
             background: rgba(10, 10, 15, 0.45); 
             border-radius: 24px; 
             padding: 35px 20px; 
@@ -192,7 +192,6 @@
         }
         .x-link .link-icon { filter: drop-shadow(0 0 6px rgba(255,255,255,0.5)); }
 
-
         /* --- אפקטי ריחוף (אנימציה נדלקת וניאון מתחזק) --- */
 
         .discord-link:hover { 
@@ -264,7 +263,7 @@
 </head>
 <body>
 
-    <!-- קנבס ליצירת חלקיקי האור הזזים והאינטראקטיביים -->
+    <!-- קנבס ליצירת חלקיקי הנצנצים/כוכבים -->
     <canvas id="bg-canvas"></canvas>
     
     <div class="vignette-layer"></div>
@@ -308,7 +307,7 @@
 
     </div>
 
-    <!-- סקריפט החלקיקים המרחפים -->
+    <!-- סקריפט לחלקיקי הכוכבים המנצנצים -->
     <script>
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
@@ -320,7 +319,7 @@
         let mouse = {
             x: null,
             y: null,
-            radius: 150 // רדיוס ההדיפה
+            radius: 120 
         }
 
         window.addEventListener('mousemove', function(event) {
@@ -351,38 +350,56 @@
 
         class Particle {
             constructor() {
-                // מיקום התחלתי אקראי על המסך
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                // מהירות וכיוון (שוטטות חופשית)
-                this.directionX = (Math.random() - 0.5) * 1.5; 
-                this.directionY = (Math.random() - 0.5) * 1.5;
-                // גודל
-                this.size = Math.random() * 3 + 2; 
-                // צבעים זוהרים
-                this.color = Math.random() > 0.5 ? 'rgba(0, 230, 255, 1)' : 'rgba(0, 100, 255, 1)';
+                
+                // העוגן שאליו החלקיק תמיד ירצה לחזור (אבל העוגן עצמו משוטט לאט לאט)
+                this.baseX = this.x;
+                this.baseY = this.y;
+                
+                // תנועה חופשית איטית ועדינה מאוד
+                this.directionX = (Math.random() - 0.5) * 0.35; 
+                this.directionY = (Math.random() - 0.5) * 0.35;
+                
+                // גודל הליבה (קטן, כדי שיראה כמו כוכב ולא עיגול ענק)
+                this.size = Math.random() * 1.2 + 0.8; 
+                
+                // משתני הנצנוץ
+                this.twinklePhase = Math.random() * Math.PI * 2;
+                this.twinkleSpeed = Math.random() * 0.03 + 0.01;
+                
+                // צבע ההילה - ניאון חזק בתכלת וכחול
+                this.glowColor = Math.random() > 0.5 ? '#00d2ff' : '#0055ff';
             }
 
             draw() {
-                ctx.fillStyle = this.color;
+                // חישוב הנצנוץ הנוכחי (הגודל של ההילה משתנה בפעימות)
+                this.twinklePhase += this.twinkleSpeed;
+                let currentGlow = Math.abs(Math.sin(this.twinklePhase)) * 25 + 15; // ההילה תהיה בין 15 ל-40 פיקסלים
+
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.closePath();
+                
+                // ציור ראשון: הילה ענקית מסביב
+                ctx.fillStyle = '#ffffff'; // ליבה לבנה כמו כוכב אולטרה-בוהק
+                ctx.shadowBlur = currentGlow; 
+                ctx.shadowColor = this.glowColor;
                 ctx.fill();
                 
-                // זוהר חזק ובולט
-                ctx.shadowBlur = 18; 
-                ctx.shadowColor = this.color;
+                // ציור שני: מוריד את הטשטוש כדי לצייר את הנקודה הלבנה חדה באמצע
+                ctx.shadowBlur = 0;
+                ctx.fill();
             }
 
             update() {
-                // קפיצה כשהחלקיק פוגע בקצוות המסך
-                if (this.x > canvas.width || this.x < 0) {
-                    this.directionX = -this.directionX;
-                }
-                if (this.y > canvas.height || this.y < 0) {
-                    this.directionY = -this.directionY;
-                }
+                // שוטטות העוגן בקצוות - אם מגיע לקצה, הופך כיוון כדי לא לברוח
+                if (this.baseX > canvas.width || this.baseX < 0) this.directionX = -this.directionX;
+                if (this.baseY > canvas.height || this.baseY < 0) this.directionY = -this.directionY;
+
+                // הזזת עוגן השיוט באופן חופשי ומתמיד
+                this.baseX += this.directionX;
+                this.baseY += this.directionY;
 
                 // אינטראקציה עם העכבר
                 let dx = mouse.x - this.x;
@@ -390,19 +407,19 @@
                 let distance = Math.sqrt(dx * dx + dy * dy);
                 
                 if (distance < mouse.radius) {
-                    // הדיפה
+                    // הדיפה אלסטית עדינה החוצה מהעכבר
                     let forceDirectionX = dx / distance;
                     let forceDirectionY = dy / distance;
                     let force = (mouse.radius - distance) / mouse.radius;
-                    let directionX = forceDirectionX * force * 5;
-                    let directionY = forceDirectionY * force * 5;
+                    let directionX = forceDirectionX * force * 1.5; // כוח הדיפה עדין יותר
+                    let directionY = forceDirectionY * force * 1.5;
                     
                     this.x -= directionX;
                     this.y -= directionY;
                 } else {
-                    // תנועה חופשית כשהעכבר לא קרוב
-                    this.x += this.directionX;
-                    this.y += this.directionY;
+                    // משיכה רכה מאוד בחזרה לנקודת העוגן שמשוטטת (נותן את האפקט האלסטי/נוזלי)
+                    this.x -= (this.x - this.baseX) / 30;
+                    this.y -= (this.y - this.baseY) / 30;
                 }
 
                 this.draw();
@@ -411,8 +428,9 @@
 
         function init() {
             particlesArray = [];
-            let numberOfParticles = (canvas.width * canvas.height) / 7000;
-            if(numberOfParticles > 150) numberOfParticles = 150; 
+            // קצת פחות חלקיקים כדי שהנצנוץ הגדול לא יעמיס על העין (וכדי שיעבוד חלק גם בטלפון)
+            let numberOfParticles = (canvas.width * canvas.height) / 8000;
+            if(numberOfParticles > 120) numberOfParticles = 120; 
             
             for (let i = 0; i < numberOfParticles; i++) {
                 particlesArray.push(new Particle());
@@ -420,6 +438,7 @@
         }
 
         function animate() {
+            // טיפונת שקיפות בניקוי הקנבס נותן תחושה חלקה עוד יותר לתנועה
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             for (let i = 0; i < particlesArray.length; i++) {
                 particlesArray[i].update();
