@@ -2,215 +2,208 @@
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>FlintPrime - Links</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        /* איפוס מלא כדי למנוע פסי גלילה */
+        html, body {
             margin: 0;
             padding: 0;
+            height: 100%;
+            width: 100%;
+            /* מונע גלילה לחלוטין */
+            overflow: hidden; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: white;
+            /* ממרכז את התוכן אנכית ואופקית */
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            /* שימוש במיקום יחסי כדי לאפשר את שכבות הרקע מעל לבודי */
-            position: relative;
         }
 
-        /* שכבת הרקע - הגיף עם אפקט הפיקסלציה (Mosaic) */
+        /* שכבת הרקע - מתיחה מלאה ללא גלילה */
         .background-layer {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('background(1).gif');
-            background-size: cover;
+            background-image: url('background(1).gif'); 
+            /* מותח את התמונה בדיוק לגודל המסך */
+            background-size: 100% 100%; 
             background-position: center;
+            background-repeat: no-repeat;
             z-index: -2;
-            /* הפילטר שיוצר מראה מפוקסל/פסיפס */
             image-rendering: pixelated; 
         }
 
-        /* שכבת ההצללה (Vignette) בקצוות */
+        /* Vignette מוחלש מאוד - 10% */
         .vignette-layer {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            /* מעבר צבע רדיאלי שקוף באמצע ושחור בקצוות */
-            background: radial-gradient(circle, rgba(0,0,0,0) 40%, rgba(0,0,0,0.8) 100%);
+            background: radial-gradient(circle, rgba(0,0,0,0) 60%, rgba(0,0,0,0.1) 100%);
             z-index: -1;
-            pointer-events: none; /* כדי שהשכבה לא תפריע ללחיצות */
+            pointer-events: none; 
         }
 
-        /* התוכן המרכזי */
+        /* מכולת התוכן הראשי */
         .content-container {
-            padding: 50px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 100%;
+            width: 90%;
+            max-width: 400px;
+            /* מונע מהתוכן להיות גבוה מדי במסכים נמוכים */
+            max-height: 90vh; 
             z-index: 1;
         }
 
         .profile-img {
-            width: 130px;
-            height: 130px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             border: 3px solid #00d2ff;
             box-shadow: 0 0 20px rgba(0, 210, 255, 0.7);
             object-fit: cover;
-            /* רצוי להגדיר גם כאן pixelated אם תמונת הפרופיל היא פיקסל ארט */
             image-rendering: pixelated;
+            /* מונע כיווץ של התמונה */
+            flex-shrink: 0; 
         }
 
         h1 { 
-            font-size: 28px; 
-            margin-bottom: 30px;
+            font-size: 26px; 
+            margin: 0 0 25px 0;
             text-shadow: 2px 2px 4px #000, 0 0 15px #0055ff;
             letter-spacing: 1px;
+            flex-shrink: 0;
         }
 
         .links-container { 
             width: 100%; 
-            max-width: 400px; 
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
+            /* מאפשר גלילה *רק* בתוך רשימת הלינקים אם היא ארוכה מדי במסך קטן */
+            overflow-y: auto; 
+            padding: 5px;
+        }
+        
+        /* הסתרת פס גלילה בעיצוב מותאם (עבור דפדפני Webkit כמו Chrome/Safari) */
+        .links-container::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
         }
 
         .link-card {
             background: rgba(10, 10, 15, 0.85);
             display: flex;
             align-items: center;
-            /* מרווח פנימי מעודכן כדי לתמוך באייקון */
-            padding: 12px 20px;
+            justify-content: center;
+            position: relative;
+            padding: 14px 20px;
             text-decoration: none;
             color: white;
             border-radius: 12px;
             border: 1px solid #0055ff;
-            box-shadow: 0 0 10px rgba(0, 85, 255, 0.4);
-            transition: all 0.3s ease;
+            box-shadow: 0 0 8px rgba(0, 85, 255, 0.3);
+            transition: all 0.2s ease;
             font-weight: bold;
-            font-size: 18px;
+            font-size: 17px;
             backdrop-filter: blur(4px);
+            /* מונע מהכפתור להתכווץ */
+            flex-shrink: 0; 
         }
 
-        /* עיצוב האייקונים בתוך הכפתורים */
         .link-icon {
-            width: 32px;
-            height: 32px;
-            /* מרווח שמאלי לאייקון (כי האתר מוגדר כ-RTL - מימין לשמאל) */
-            margin-left: 15px; 
-            image-rendering: pixelated; /* שמירה על מראה הפיקסל ארט */
-        }
-        
-        .link-text {
-            flex-grow: 1;
-            text-align: center;
-            /* מזיז מעט את הטקסט ימינה כדי לפצות על האייקון ולמרכז את הטקסט */
-            margin-right: 32px; 
+            position: absolute;
+            right: 15px; 
+            width: 28px;
+            height: 28px;
+            image-rendering: pixelated; 
         }
 
-        /* אפקטי ריחוף (Hover) עם הצבעים המותאמים אישית */
-        
-        /* Discord */
+        /* אפקטי ריחוף */
         .discord-link:hover { 
             background: rgba(138, 159, 255, 0.2); 
             border-color: #8a9fff;
-            box-shadow: 0 0 20px rgba(138, 159, 255, 0.8);
+            box-shadow: 0 0 15px rgba(138, 159, 255, 0.7);
         }
 
-        /* Kick */
         .kick-link:hover { 
             background: rgba(9, 255, 0, 0.2); 
             border-color: #09ff00;
-            box-shadow: 0 0 20px rgba(9, 255, 0, 0.8);
+            box-shadow: 0 0 15px rgba(9, 255, 0, 0.7);
         }
 
-        /* YouTube */
         .youtube-link:hover { 
             background: rgba(255, 31, 31, 0.2); 
             border-color: #ff1f1f;
-            box-shadow: 0 0 20px rgba(255, 31, 31, 0.8);
+            box-shadow: 0 0 15px rgba(255, 31, 31, 0.7);
         }
 
-        /* TikTok */
         .tiktok-link:hover { 
             background: rgba(255, 56, 106, 0.2); 
             border-color: #ff386a;
-            box-shadow: 0 0 20px rgba(255, 56, 106, 0.8);
+            box-shadow: 0 0 15px rgba(255, 56, 106, 0.7);
         }
 
-        /* Instagram */
         .instagram-link:hover { 
             background: rgba(255, 114, 54, 0.2); 
             border-color: #ff7236;
-            box-shadow: 0 0 20px rgba(255, 114, 54, 0.8);
+            box-shadow: 0 0 15px rgba(255, 114, 54, 0.7);
         }
 
-        /* X */
         .x-link:hover { 
-            background: rgba(48, 48, 48, 0.8); 
-            border-color: #ffffff; /* בחרתי לבן למסגרת כי שחור ייבלע ברקע הכהה */
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.15); 
+            border-color: #ffffff; 
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
         }
-
     </style>
 </head>
 <body>
 
-    <!-- שכבות הרקע -->
     <div class="background-layer"></div>
     <div class="vignette-layer"></div>
 
-    <!-- תוכן האתר -->
     <div class="content-container">
-        <!-- תמונת פרופיל מונפשת -->
         <img src="FlintOM-Animated.gif" alt="FlintPrime Profile" class="profile-img">
 
         <h1>FlintPrime</h1>
 
         <div class="links-container">
             
-            <!-- Discord -->
             <a href="https://discord.gg/discord.com/invite/p2hSdzAdRu" target="_blank" class="link-card discord-link">
-                <img src="discord.png" alt="Discord Icon" class="link-icon">
-                <span class="link-text">Discord</span>
+                <img src="discord.png" alt="" class="link-icon">
+                <span class="link-text">דיסקורד</span>
             </a>
 
-            <!-- Kick -->
             <a href="https://kick.com/flintprime" target="_blank" class="link-card kick-link">
-                <img src="kick.png" alt="Kick Icon" class="link-icon">
-                <span class="link-text">Kick</span>
+                <img src="kick.png" alt="" class="link-icon">
+                <span class="link-text">קיק</span>
             </a>
 
-            <!-- YouTube -->
             <a href="https://youtube.com/@FlintPr1me" target="_blank" class="link-card youtube-link">
-                <img src="youtube.png" alt="YouTube Icon" class="link-icon">
-                <span class="link-text">YouTube</span>
+                <img src="youtube.png" alt="" class="link-icon">
+                <span class="link-text">יוטיוב</span>
             </a>
 
-            <!-- TikTok -->
             <a href="https://tiktok.com/@flintprime" target="_blank" class="link-card tiktok-link">
-                <img src="tiktok.png" alt="TikTok Icon" class="link-icon">
-                <span class="link-text">TikTok</span>
+                <img src="tiktok.png" alt="" class="link-icon">
+                <span class="link-text">טיקטוק</span>
             </a>
 
-            <!-- Instagram -->
             <a href="https://instagram.com/FlintPrime" target="_blank" class="link-card instagram-link">
-                <img src="instagram.png" alt="Instagram Icon" class="link-icon">
-                <span class="link-text">Instagram</span>
+                <img src="instagram.png" alt="" class="link-icon">
+                <span class="link-text">אינסטגרם</span>
             </a>
 
-            <!-- X -->
             <a href="https://x.com/FlintPr1me" target="_blank" class="link-card x-link">
-                <img src="x.png" alt="X Icon" class="link-icon">
-                <span class="link-text">X (Twitter)</span>
+                <img src="x.png" alt="" class="link-icon">
+                <span class="link-text">X (טוויטר)</span>
             </a>
 
         </div>
