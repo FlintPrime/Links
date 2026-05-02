@@ -16,10 +16,10 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #080910; /* רקע שחור-כחול עמוק ונקי */
+            background-color: #030614; /* רקע שחור-כחלחל עמוק וקר יותר */
         }
 
-        /* קנבס האורורה החדש */
+        /* קנבס האורורה */
         #aurora-canvas {
             position: fixed;
             top: 0;
@@ -27,20 +27,19 @@
             width: 100vw;
             height: 100vh;
             z-index: 0;
-            /* הפילטר הזה הוא הסוד! הוא ממזג את הצורות למראה של נוזל/אורורה ומקפיץ את הצבעים */
             filter: blur(100px) saturate(150%);
-            opacity: 0.85; /* שקיפות קלה כדי לשמור על קונטרסט כהה */
+            opacity: 0.85; 
             pointer-events: none;
         }
 
-        /* השחרת קצוות מינימליסטית */
+        /* השחרת קצוות */
         .vignette-layer {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(0,0,0,0) 30%, rgba(8,9,16,0.8) 100%);
+            background: radial-gradient(circle, rgba(0,0,0,0) 30%, rgba(3,6,20,0.8) 100%);
             z-index: 1; 
             pointer-events: none; 
         }
@@ -167,7 +166,7 @@
         .x-link { background: linear-gradient(90deg, #121218, #323232); border: 1px solid rgba(255,255,255,0.3); box-shadow: 0 12px 20px rgba(0, 0, 0, 0.35), inset 0 0 8px rgba(255, 255, 255, 0.1); }
         .x-link .link-icon { filter: drop-shadow(0 0 6px rgba(255,255,255,0.5)); }
 
-        /* אפקטי ריחוף עכבר על הכפתורים */
+        /* אפקטי ריחוף */
         .discord-link:hover { background: linear-gradient(90deg, #121218, #40508c, #121218, #2d3a68); background-size: 300% 300%; animation: holoShine 2.5s ease infinite; border-color: #8a9fff; box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(138, 159, 255, 0.7); }
         .discord-link:hover .link-icon { filter: drop-shadow(0 0 12px rgba(138,159,255,1)); transform: scale(1.05); }
 
@@ -201,7 +200,7 @@
 </head>
 <body>
 
-    <!-- קנבס ליצירת האורורה / Mesh Gradient המקצועי -->
+    <!-- קנבס ליצירת האורורה / Mesh Gradient - גווני כחול נקיים -->
     <canvas id="aurora-canvas"></canvas>
     
     <div class="vignette-layer"></div>
@@ -245,7 +244,7 @@
 
     </div>
 
-    <!-- סקריפט ליצירת רקע ה-Abstract Aurora המגיב לעכבר -->
+    <!-- סקריפט ליצירת רקע ה-Abstract Aurora (כחול טהור) המגיב לעכבר -->
     <script>
         const canvas = document.getElementById('aurora-canvas');
         const ctx = canvas.getContext('2d');
@@ -253,7 +252,6 @@
         let width, height;
         let time = 0;
         
-        // משתני עכבר לאפקט הפרלקס
         let mouseX = 0;
         let mouseY = 0;
         let targetMouseX = 0;
@@ -267,33 +265,28 @@
         window.addEventListener('resize', resize);
         resize();
 
-        // מעקב אחר תנועות עכבר
         window.addEventListener('mousemove', (e) => {
-            // חישוב המרחק ממרכז המסך (ערכים בין -1 ל 1)
             targetMouseX = (e.clientX / width - 0.5) * 2;
             targetMouseY = (e.clientY / height - 0.5) * 2;
         });
 
-        // הצבעים המדויקים מהתמונה של אדובי (סגול עמוק, תכלת זוהר, כחול כהה)
+        // פלטת צבעים חדשה: רק גוונים של כחול ותכלת
         const auroraColors = [
-            'rgba(0, 220, 255, 0.9)',   // תכלת/ציאן בוהק
-            'rgba(180, 0, 255, 0.8)',   // סגול ניאון/פינק
-            'rgba(0, 70, 255, 0.9)',    // כחול רויאל עמוק
-            'rgba(255, 0, 150, 0.6)'    // נגיעת מגנטה
+            'rgba(0, 220, 255, 0.9)',   // ציאן / תכלת בהיר וזוהר
+            'rgba(0, 100, 255, 0.8)',   // כחול אוקיינוס
+            'rgba(10, 40, 150, 0.9)',   // כחול רויאל עמוק
+            'rgba(0, 180, 255, 0.7)'    // תכלת נוסף לגיוון רך
         ];
 
-        // פונקציה שמציירת "גל" אורורה (כתם אליפטי מתוח)
         function drawAuroraFold(x, y, radius, color, rotation) {
             ctx.save();
             ctx.translate(x, y);
             ctx.rotate(rotation);
-            // מותח את העיגול לאליפסה כדי שייראה כמו גל צבע/אורורה ולא סתם עיגול
             ctx.scale(1, 0.5); 
             
             ctx.beginPath();
             ctx.arc(0, 0, radius, 0, Math.PI * 2);
             
-            // שימוש בגרדיאנט רדיאלי כדי שהצבע ישתלב ברכות ברקע
             let grad = ctx.createRadialGradient(0, 0, 0, 0, 0, radius);
             grad.addColorStop(0, color);
             grad.addColorStop(1, 'transparent');
@@ -306,38 +299,35 @@
         function animate() {
             ctx.clearRect(0, 0, width, height);
             
-            // תנועה חלקה מאוד לעכבר (Easing) לאפקט פרלקס יוקרתי
             mouseX += (targetMouseX - mouseX) * 0.05;
             mouseY += (targetMouseY - mouseY) * 0.05;
 
-            time += 0.003; // מהירות האנימציה הכללית (איטי וזורם)
+            time += 0.003; 
 
-            // ציור הגלים השונים. כל גל מושפע קצת אחרת מהעכבר ליצירת עומק תלת-ממדי
-            
-            // גל 1: תכלת ימני
+            // גל 1: ציאן בוהק (ימין למעלה)
             drawAuroraFold(
                 width * 0.7 + Math.sin(time * 0.8) * 300 + mouseX * 150, 
-                height * 0.8 + Math.cos(time * 1.1) * 200 + mouseY * 150, 
+                height * 0.3 + Math.cos(time * 1.1) * 200 + mouseY * 150, 
                 width * 0.6, auroraColors[0], time * 0.5
             );
 
-            // גל 2: סגול מרכזי תחתון (זז בכיוון ההפוך לעכבר לעומק)
+            // גל 2: כחול אוקיינוס (שמאל למטה)
             drawAuroraFold(
-                width * 0.4 + Math.sin(time * 1.2) * 250 - mouseX * 100, 
-                height * 0.7 + Math.cos(time * 0.9) * 300 - mouseY * 100, 
+                width * 0.3 + Math.sin(time * 1.2) * 250 - mouseX * 100, 
+                height * 0.8 + Math.cos(time * 0.9) * 300 - mouseY * 100, 
                 width * 0.7, auroraColors[1], time * -0.3
             );
 
-            // גל 3: כחול עמוק שמאלי עליון
+            // גל 3: כחול עמוק מאוד (מרכז כדי לתת עומק וקונטרסט)
             drawAuroraFold(
-                width * 0.2 + Math.sin(time * 0.7) * 350 + mouseX * 200, 
-                height * 0.3 + Math.cos(time * 1.3) * 250 + mouseY * 200, 
+                width * 0.5 + Math.sin(time * 0.7) * 350 + mouseX * 200, 
+                height * 0.5 + Math.cos(time * 1.3) * 250 + mouseY * 200, 
                 width * 0.8, auroraColors[2], time * 0.4
             );
 
-            // גל 4: נגיעה קטנה של מגנטה למעבר צבעים רך יותר
+            // גל 4: תכלת רך למיזוג (זז לאט יחסית)
             drawAuroraFold(
-                width * 0.6 + Math.cos(time * 1.5) * 200 - mouseX * 120, 
+                width * 0.2 + Math.cos(time * 1.5) * 200 - mouseX * 120, 
                 height * 0.2 + Math.sin(time * 0.6) * 200 - mouseY * 120, 
                 width * 0.5, auroraColors[3], time * 0.7
             );
