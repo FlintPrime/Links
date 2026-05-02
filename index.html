@@ -43,23 +43,20 @@
             pointer-events: none; 
         }
 
-        /* מלבן התוכן המרכזי שעודכן - סגנון Glassmorphism */
         .content-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             width: 90%;
-            max-width: 420px; /* הורחב מעט כדי לתת מקום למרווח הפנימי */
+            max-width: 420px; 
             max-height: 90vh; 
             z-index: 1;
-            
-            /* עיצוב המלבן השחור השקוף */
-            background: rgba(10, 10, 15, 0.45); /* שחור עם 45% שקיפות */
-            border-radius: 24px; /* קצוות מעוגלים */
-            padding: 35px 20px; /* מרווח פנימי מעל ומתחת, ובצדדים */
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6); /* הצללה חיצונית עמוקה למלבן עצמו */
-            backdrop-filter: blur(8px); /* אפקט טשטוש לזכוכית חלבית */
-            border: 1px solid rgba(255, 255, 255, 0.05); /* מסגרת עדינה מאוד למראה יוקרתי */
+            background: rgba(10, 10, 15, 0.45); 
+            border-radius: 24px; 
+            padding: 35px 20px; 
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6); 
+            backdrop-filter: blur(8px); 
+            border: 1px solid rgba(255, 255, 255, 0.05); 
         }
 
         .profile-img {
@@ -109,7 +106,6 @@
         }
 
         .link-card {
-            background: rgba(15, 15, 20, 0.75); /* טיפה יותר כהה כדי לבלוט בתוך המלבן */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -118,8 +114,6 @@
             text-decoration: none;
             color: white;
             border-radius: 12px;
-            border: 1px solid #0055ff;
-            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.35), inset 0 0 8px rgba(0, 85, 255, 0.1);
             transition: all 0.3s ease;
             font-weight: bold;
             font-size: 17px;
@@ -150,12 +144,52 @@
             z-index: 2; 
         }
 
+        /* --- עיצוב כפתורים אינדיבידואלי במצב רגיל (לפני ריחוף) --- */
+        
+        .discord-link { 
+            background: linear-gradient(90deg, rgba(10,10,15,0.9), rgba(138,159,255,0.2)); 
+            border: 1px solid rgba(138,159,255,0.5); 
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.35), inset 0 0 8px rgba(138, 159, 255, 0.15);
+        }
         .discord-link .link-icon { filter: drop-shadow(0 0 6px rgba(138,159,255,0.8)); }
+
+        .kick-link { 
+            background: linear-gradient(90deg, rgba(10,10,15,0.9), rgba(9,255,0,0.15)); 
+            border: 1px solid rgba(9,255,0,0.5); 
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.35), inset 0 0 8px rgba(9, 255, 0, 0.15);
+        }
         .kick-link .link-icon { filter: drop-shadow(0 0 6px rgba(9,255,0,0.8)); }
+
+        .youtube-link { 
+            background: linear-gradient(90deg, rgba(10,10,15,0.9), rgba(255,31,31,0.2)); 
+            border: 1px solid rgba(255,31,31,0.5); 
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.35), inset 0 0 8px rgba(255, 31, 31, 0.15);
+        }
         .youtube-link .link-icon { filter: drop-shadow(0 0 6px rgba(255,31,31,0.8)); }
+
+        .tiktok-link { 
+            background: linear-gradient(90deg, rgba(10,10,15,0.9), rgba(255,56,106,0.2)); 
+            border: 1px solid rgba(255,56,106,0.5); 
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.35), inset 0 0 8px rgba(255, 56, 106, 0.15);
+        }
         .tiktok-link .link-icon { filter: drop-shadow(0 0 6px rgba(255,56,106,0.8)); }
+
+        .instagram-link { 
+            background: linear-gradient(90deg, rgba(10,10,15,0.9), rgba(255,114,54,0.2)); 
+            border: 1px solid rgba(255,114,54,0.5); 
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.35), inset 0 0 8px rgba(255, 114, 54, 0.15);
+        }
         .instagram-link .link-icon { filter: drop-shadow(0 0 6px rgba(255,114,54,0.8)); }
+
+        .x-link { 
+            background: linear-gradient(90deg, rgba(10,10,15,0.9), rgba(150,150,150,0.15)); 
+            border: 1px solid rgba(255,255,255,0.3); 
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.35), inset 0 0 8px rgba(255, 255, 255, 0.1);
+        }
         .x-link .link-icon { filter: drop-shadow(0 0 6px rgba(255,255,255,0.5)); }
+
+
+        /* --- אפקטי ריחוף (האנימציה נדלקת!) --- */
 
         .discord-link:hover { 
             background: linear-gradient(90deg, rgba(10,10,15,0.9), rgba(138,159,255,0.6), rgba(10,10,15,0.9), rgba(138,159,255,0.4));
@@ -211,12 +245,11 @@
         }
         .x-link:hover .link-icon { filter: drop-shadow(0 0 12px rgba(255,255,255,0.8)); transform: scale(1.05); }
 
-        /* טקסט הפוטר הובהר כדי שייראה מעולה על הרקע השחור החדש */
         .footer-credits {
             margin-top: 25px;
             text-align: center;
             font-size: 13px;
-            color: rgba(255, 255, 255, 0.85); /* הובהר */
+            color: rgba(255, 255, 255, 0.85); 
             letter-spacing: 0.5px;
             line-height: 1.6;
             flex-shrink: 0;
