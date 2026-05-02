@@ -5,23 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>FlintPrime - Links</title>
     <style>
-        /* איפוס מלא כדי למנוע פסי גלילה */
         html, body {
             margin: 0;
             padding: 0;
             height: 100%;
             width: 100%;
-            /* מונע גלילה לחלוטין */
             overflow: hidden; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: white;
-            /* ממרכז את התוכן אנכית ואופקית */
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* שכבת הרקע - מתיחה מלאה ללא גלילה */
         .background-layer {
             position: fixed;
             top: 0;
@@ -29,7 +25,6 @@
             width: 100%;
             height: 100%;
             background-image: url('background(1).gif'); 
-            /* מותח את התמונה בדיוק לגודל המסך */
             background-size: 100% 100%; 
             background-position: center;
             background-repeat: no-repeat;
@@ -37,7 +32,6 @@
             image-rendering: pixelated; 
         }
 
-        /* Vignette מוחלש מאוד - 10% */
         .vignette-layer {
             position: fixed;
             top: 0;
@@ -49,14 +43,12 @@
             pointer-events: none; 
         }
 
-        /* מכולת התוכן הראשי */
         .content-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             width: 90%;
             max-width: 400px;
-            /* מונע מהתוכן להיות גבוה מדי במסכים נמוכים */
             max-height: 90vh; 
             z-index: 1;
         }
@@ -70,7 +62,6 @@
             box-shadow: 0 0 20px rgba(0, 210, 255, 0.7);
             object-fit: cover;
             image-rendering: pixelated;
-            /* מונע כיווץ של התמונה */
             flex-shrink: 0; 
         }
 
@@ -87,15 +78,20 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
-            /* מאפשר גלילה *רק* בתוך רשימת הלינקים אם היא ארוכה מדי במסך קטן */
             overflow-y: auto; 
             padding: 5px;
         }
         
-        /* הסתרת פס גלילה בעיצוב מותאם (עבור דפדפני Webkit כמו Chrome/Safari) */
         .links-container::-webkit-scrollbar {
             width: 0px;
             background: transparent;
+        }
+
+        /* הגדרת האנימציה ההולוגרפית לריחוף */
+        @keyframes holoShine {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .link-card {
@@ -110,12 +106,13 @@
             border-radius: 12px;
             border: 1px solid #0055ff;
             box-shadow: 0 0 8px rgba(0, 85, 255, 0.3);
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
             font-weight: bold;
             font-size: 17px;
             backdrop-filter: blur(4px);
-            /* מונע מהכפתור להתכווץ */
             flex-shrink: 0; 
+            /* חשוב כדי שהאנימציה לא תחרוג מהכפתור */
+            overflow: hidden; 
         }
 
         .link-icon {
@@ -124,41 +121,62 @@
             width: 28px;
             height: 28px;
             image-rendering: pixelated; 
+            /* מוודא שהאייקון נשאר מעל הרקע הזוז */
+            z-index: 2; 
+        }
+        
+        .link-text {
+            /* מוודא שהטקסט נשאר מעל הרקע הזוז */
+            z-index: 2; 
         }
 
-        /* אפקטי ריחוף */
+        /* אפקטי ריחוף (Hover) עם רקע הולוגרפי זז */
+        
         .discord-link:hover { 
-            background: rgba(138, 159, 255, 0.2); 
+            background: linear-gradient(90deg, rgba(10,10,15,0.9), rgba(138,159,255,0.6), rgba(10,10,15,0.9), rgba(138,159,255,0.4));
+            background-size: 300% 300%;
+            animation: holoShine 3s ease infinite;
             border-color: #8a9fff;
             box-shadow: 0 0 15px rgba(138, 159, 255, 0.7);
         }
 
         .kick-link:hover { 
-            background: rgba(9, 255, 0, 0.2); 
+            background: linear-gradient(90deg, rgba(10,10,15,0.9), rgba(9,255,0,0.5), rgba(10,10,15,0.9), rgba(9,255,0,0.3));
+            background-size: 300% 300%;
+            animation: holoShine 3s ease infinite;
             border-color: #09ff00;
             box-shadow: 0 0 15px rgba(9, 255, 0, 0.7);
         }
 
         .youtube-link:hover { 
-            background: rgba(255, 31, 31, 0.2); 
+            background: linear-gradient(90deg, rgba(10,10,15,0.9), rgba(255,31,31,0.6), rgba(10,10,15,0.9), rgba(255,31,31,0.4));
+            background-size: 300% 300%;
+            animation: holoShine 3s ease infinite;
             border-color: #ff1f1f;
             box-shadow: 0 0 15px rgba(255, 31, 31, 0.7);
         }
 
         .tiktok-link:hover { 
-            background: rgba(255, 56, 106, 0.2); 
+            background: linear-gradient(90deg, rgba(10,10,15,0.9), rgba(255,56,106,0.6), rgba(10,10,15,0.9), rgba(255,56,106,0.4));
+            background-size: 300% 300%;
+            animation: holoShine 3s ease infinite;
             border-color: #ff386a;
             box-shadow: 0 0 15px rgba(255, 56, 106, 0.7);
         }
 
         .instagram-link:hover { 
-            background: rgba(255, 114, 54, 0.2); 
+            background: linear-gradient(90deg, rgba(10,10,15,0.9), rgba(255,114,54,0.6), rgba(10,10,15,0.9), rgba(255,114,54,0.4));
+            background-size: 300% 300%;
+            animation: holoShine 3s ease infinite;
             border-color: #ff7236;
             box-shadow: 0 0 15px rgba(255, 114, 54, 0.7);
         }
 
         .x-link:hover { 
-            background: rgba(255, 255, 255, 0.15); 
+            /* כאן הוספתי גוון מעט מטאלי כי שחור ייבלע ברקע */
+            background: linear-gradient(90deg, rgba(10,10,15,0.9), rgba(100,100,100,0.5), rgba(10,10,15,0.9), rgba(80,80,80,0.4));
+            background-size: 300% 300%;
+            animation: holoShine 3s ease infinite;
             border-color: #ffffff; 
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
         }
@@ -177,32 +195,33 @@
         <div class="links-container">
             
             <a href="https://discord.gg/discord.com/invite/p2hSdzAdRu" target="_blank" class="link-card discord-link">
-                <img src="discord.png" alt="" class="link-icon">
+                <!-- שמות הקבצים תוקנו בדיוק לפי התמונה שהעלית -->
+                <img src="discord_icon_bg.png" alt="" class="link-icon">
                 <span class="link-text">דיסקורד</span>
             </a>
 
             <a href="https://kick.com/flintprime" target="_blank" class="link-card kick-link">
-                <img src="kick.png" alt="" class="link-icon">
+                <img src="kick_icon_bg.png" alt="" class="link-icon">
                 <span class="link-text">קיק</span>
             </a>
 
             <a href="https://youtube.com/@FlintPr1me" target="_blank" class="link-card youtube-link">
-                <img src="youtube.png" alt="" class="link-icon">
+                <img src="youtube_icon_bg.png" alt="" class="link-icon">
                 <span class="link-text">יוטיוב</span>
             </a>
 
             <a href="https://tiktok.com/@flintprime" target="_blank" class="link-card tiktok-link">
-                <img src="tiktok.png" alt="" class="link-icon">
+                <img src="tiktok_icon_bg.png" alt="" class="link-icon">
                 <span class="link-text">טיקטוק</span>
             </a>
 
             <a href="https://instagram.com/FlintPrime" target="_blank" class="link-card instagram-link">
-                <img src="instagram.png" alt="" class="link-icon">
+                <img src="instagram_icon_bg.png" alt="" class="link-icon">
                 <span class="link-text">אינסטגרם</span>
             </a>
 
             <a href="https://x.com/FlintPr1me" target="_blank" class="link-card x-link">
-                <img src="x.png" alt="" class="link-icon">
+                <img src="xtwitter_icon_bg.png" alt="" class="link-icon">
                 <span class="link-text">X (טוויטר)</span>
             </a>
 
