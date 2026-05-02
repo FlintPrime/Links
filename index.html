@@ -16,7 +16,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #05050a; /* רקע שחור-כחלחל עמוק */
+            /* הסרנו את צבע הרקע מפה כדי שלא יבלע את הקנבס */
         }
 
         /* קנבס החלקיקים ברקע */
@@ -26,7 +26,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -2;
+            z-index: 0; /* שכבת בסיס */
+            background-color: #05050a; /* הרקע הכהה יושב כאן עכשיו */
         }
 
         .vignette-layer {
@@ -35,8 +36,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(0,0,0,0) 20%, rgba(0,0,0,0.5) 100%);
-            z-index: -1;
+            background: radial-gradient(circle, rgba(0,0,0,0) 20%, rgba(0,0,0,0.6) 100%);
+            z-index: 1; /* מעל החלקיקים */
             pointer-events: none; 
         }
 
@@ -47,7 +48,8 @@
             width: 90%;
             max-width: 420px; 
             max-height: 90vh; 
-            z-index: 1;
+            position: relative; /* חובה כדי שה-z-index יעבוד */
+            z-index: 2; /* מעל הכל */
             background: rgba(10, 10, 15, 0.45); 
             border-radius: 24px; 
             padding: 35px 20px; 
@@ -303,50 +305,53 @@
         const ctx = canvas.getContext('2d');
         let particlesArray;
 
-        // התאמת גודל הקנבס למסך
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        // משתנה עכבר
         let mouse = {
             x: null,
             y: null,
-            radius: 120 // הרדיוס שבו העכבר משפיע על החלקיקים (דוחף אותם)
+            radius: 130 // הרדיוס שדוחף את החלקיקים
         }
 
-        // האזנה לתזוזת עכבר
+        // תמיכה בעכבר למחשב
         window.addEventListener('mousemove', function(event) {
             mouse.x = event.x;
             mouse.y = event.y;
         });
 
-        // האזנה ליציאת העכבר מהמסך
+        // תמיכה בטאצ' למובייל
+        window.addEventListener('touchmove', function(event) {
+            mouse.x = event.touches[0].clientX;
+            mouse.y = event.touches[0].clientY;
+        });
+
         window.addEventListener('mouseout', function() {
             mouse.x = undefined;
             mouse.y = undefined;
         });
+        
+        window.addEventListener('touchend', function() {
+            mouse.x = undefined;
+            mouse.y = undefined;
+        });
 
-        // עדכון קנבס בשינוי גודל מסך
         window.addEventListener('resize', function() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            init(); // מאתחל מחדש את החלקיקים
+            init(); 
         });
 
-        // מחלקת חלקיק
         class Particle {
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                // נקודת המוצא שאליה החלקיק תמיד ירצה לחזור (האפקט האלסטי)
                 this.baseX = this.x;
                 this.baseY = this.y;
-                // גודל אקראי
-                this.size = Math.random() * 3 + 1;
-                // משקל/מהירות חזרה ליצירת גיוון בין החלקיקים
+                this.size = Math.random() * 3 + 1.5;
                 this.density = (Math.random() * 30) + 1;
-                // צבעים זוהרים: תכלת או כחול עמוק
-                this.color = Math.random() > 0.5 ? 'rgba(0, 210, 255, 0.8)' : 'rgba(0, 85, 255, 0.8)';
+                // הצבעים של החלקיקים: תכלת זוהר או כחול ניאון
+                this.color = Math.random() > 0.5 ? 'rgba(0, 210, 255, 0.9)' : 'rgba(0, 85, 255, 0.9)';
             }
 
             draw() {
@@ -356,35 +361,32 @@
                 ctx.closePath();
                 ctx.fill();
                 
-                // אפקט של הילה/זוהר סביב הנקודה
-                ctx.shadowBlur = 12;
+                // הילה זוהרת סביב כל חלקיק
+                ctx.shadowBlur = 10;
                 ctx.shadowColor = this.color;
             }
 
             update() {
-                // חישוב המרחק של העכבר מהחלקיק
                 let dx = mouse.x - this.x;
                 let dy = mouse.y - this.y;
                 let distance = Math.sqrt(dx * dx + dy * dy);
                 
-                // כיוון ההדיפה
                 let forceDirectionX = dx / distance;
                 let forceDirectionY = dy / distance;
                 
-                // כמה חזק להדוף (קרוב יותר = הדיפה חזקה יותר)
                 let force = (mouse.radius - distance) / mouse.radius;
                 let directionX = forceDirectionX * force * this.density;
                 let directionY = forceDirectionY * force * this.density;
 
-                // אם העכבר קרוב, תהדוף את החלקיק
+                // הדיפה מהעכבר
                 if (distance < mouse.radius) {
                     this.x -= directionX;
                     this.y -= directionY;
                 } else {
-                    // אחרת - האפקט האלסטי: החלקיק חוזר לאט ובצורה חלקה לנקודת המוצא שלו
+                    // חזרה אלסטית למקום המוצא
                     if (this.x !== this.baseX) {
                         let dx = this.x - this.baseX;
-                        this.x -= dx / 15; // ככל שהמספר גדול יותר, החזרה רכה ואיטית יותר
+                        this.x -= dx / 15;
                     }
                     if (this.y !== this.baseY) {
                         let dy = this.y - this.baseY;
@@ -395,19 +397,17 @@
             }
         }
 
-        // אתחול המערכת ויצירת החלקיקים
         function init() {
             particlesArray = [];
-            // כמות החלקיקים על המסך (אפשר להגדיל או להקטין)
-            let numberOfParticles = (canvas.width * canvas.height) / 8000;
-            if(numberOfParticles > 200) numberOfParticles = 200; // הגבלת מקסימום לביצועים
+            // כמות החלקיקים
+            let numberOfParticles = (canvas.width * canvas.height) / 7000;
+            if(numberOfParticles > 250) numberOfParticles = 250; 
             
             for (let i = 0; i < numberOfParticles; i++) {
                 particlesArray.push(new Particle());
             }
         }
 
-        // לולאת האנימציה שרצה כל הזמן
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             for (let i = 0; i < particlesArray.length; i++) {
