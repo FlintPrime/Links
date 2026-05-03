@@ -16,23 +16,23 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #0008ff; 
+            background-color: #000; /* שחור בסיסי מאחורי הכל */
         }
 
-        /* --- רקע הפרלקס האינסופי --- */
+        /* --- רקע הפרלקס האינסופי (שכבה 0) --- */
         .background-layer {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            /* השם המדויק שלך מהגיטהאב + טריק לשבירת הקאש כדי שיטען מיד */
-            background-image: url('parallax_bg.png?v=1'); 
+            background-color: #0008ff; /* הצבע הכחול יושב פה עכשיו, מאחורי התמונה ולא מעליה! */
+            background-image: url('parallax_bg.png'); 
             background-repeat: repeat; 
             background-size: 600px; 
             image-rendering: pixelated; 
             animation: scrollBackground 30s linear infinite; 
-            z-index: -2;
+            z-index: 0; /* מספר חיובי - אי אפשר להסתיר את זה יותר */
         }
 
         @keyframes scrollBackground {
@@ -40,7 +40,7 @@
             100% { background-position: -600px 0; } 
         }
 
-        /* --- ה-Vignette העדין --- */
+        /* --- ה-Vignette העדין (שכבה 1) --- */
         .vignette-layer {
             position: fixed;
             top: 0;
@@ -48,10 +48,11 @@
             width: 100%;
             height: 100%;
             background: radial-gradient(circle, rgba(0,0,0,0) 30%, rgba(0,0,0,0.65) 100%);
-            z-index: -1; 
+            z-index: 1; 
             pointer-events: none; 
         }
 
+        /* --- מלבן התוכן המרכזי (שכבה 2) --- */
         .content-container {
             display: flex;
             flex-direction: column;
@@ -60,7 +61,7 @@
             max-width: 420px; 
             max-height: 90vh; 
             position: relative; 
-            z-index: 1; 
+            z-index: 2; /* הכי גבוה, יושב מעל הכל */
             background: rgba(10, 10, 15, 0.55); 
             border-radius: 24px; 
             padding: 35px 20px; 
@@ -224,6 +225,7 @@
 </head>
 <body>
 
+    <!-- השכבות סודרו בסדר עולה: 0, 1, 2 -->
     <div class="background-layer"></div>
     <div class="vignette-layer"></div>
 
