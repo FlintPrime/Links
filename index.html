@@ -19,7 +19,7 @@
             background-color: #000; 
         }
 
-        /* --- רקע הפרלקס (מותאם לזום 1080p ומהירות חצי) --- */
+        /* --- רקע הפרלקס --- */
         .background-layer {
             position: fixed;
             top: 0;
@@ -27,34 +27,29 @@
             width: 100%;
             height: 100%;
             background-color: #0008ff; 
-            background-image: url('space.png'); 
+            /* הנה התיקון! השם המדויק שהעלת לגיטהאב */
+            background-image: url('parallax_bg.png'); 
             background-repeat: repeat; 
-            
-            /* זום-אין לרזולוציית 1080p */
             background-size: 1920px; 
-            
             image-rendering: pixelated; 
-            
-            /* הזמן הוכפל מ-30s ל-60s כדי שהתנועה תהיה בחצי מהירות */
             animation: scrollBackground 60s linear infinite; 
-            
             z-index: 0; 
         }
 
-        /* הלופ המושלם - חייב להיות תואם לגודל החדש (1920px) */
         @keyframes scrollBackground {
             0% { background-position: 0 0; }
             100% { background-position: -1920px 0; } 
         }
 
-        /* --- ה-Vignette העדין --- */
+        /* --- ה-Vignette העדין יותר --- */
         .vignette-layer {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(0,0,0,0) 30%, rgba(0,0,0,0.65) 100%);
+            /* הורדתי את עוצמת השחור בקצוות והרחבתי את המרכז השקוף */
+            background: radial-gradient(circle, rgba(0,0,0,0) 40%, rgba(0,0,0,0.4) 100%);
             z-index: 1; 
             pointer-events: none; 
         }
