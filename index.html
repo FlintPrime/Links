@@ -16,29 +16,28 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #0008ff; /* צבע גיבוי כחול למקרה שהתמונה עוד לא נטענה */
+            background-color: #0008ff; /* צבע גיבוי כחול */
         }
 
-        /* --- רקע הפרלקס האינסופי החדש --- */
+        /* --- רקע הפרלקס האינסופי החדש - מתוקן! --- */
         .background-layer {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('parallax_bg.png'); 
-            background-repeat: repeat; /* גורם לתמונה לחזור על עצמה כמו אריחים */
-            /* גודל התמונה - אפשר לשנות את ה-600px אם רוצים שהאייקונים ברקע יהיו גדולים/קטנים יותר */
+            /* שיניתי את שם הקובץ כך שיתאים בדיוק לשם שהעלית עם אותיות גדולות */
+            background-image: url('./FLINTSPACE.png'); 
+            background-repeat: repeat; 
             background-size: 600px; 
-            image-rendering: pixelated; /* סופר חשוב: שומר על החדות של הפיקסל-ארט */
-            animation: scrollBackground 30s linear infinite; /* אנימציה חלקה ואינסופית */
+            image-rendering: pixelated; 
+            animation: scrollBackground 30s linear infinite; 
             z-index: -2;
         }
 
-        /* מפתח האנימציה שיוצר את הלופ המושלם */
         @keyframes scrollBackground {
             0% { background-position: 0 0; }
-            100% { background-position: -600px 0; } /* חייב להיות תואם ל-background-size כדי שהלופ יהיה בלתי נראה */
+            100% { background-position: -600px 0; } 
         }
 
         /* --- ה-Vignette העדין --- */
@@ -53,7 +52,6 @@
             pointer-events: none; 
         }
 
-        /* מלבן הזכוכית המרכזי */
         .content-container {
             display: flex;
             flex-direction: column;
